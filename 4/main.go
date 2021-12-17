@@ -9,17 +9,30 @@ type cards [][]int
 func main() {
 	cards := getInputs()
 	fmt.Println(cards)
-	for card := range cards {
-
-	}
 	for i := 0; ; i++ {
 		drawnNum := draw(i)
 		fmt.Println("drew:", drawnNum)
-		// for val := range cards {
-		// 	if card == val {
-		// 		card = 0
-		// 	}
-		// }
+		for numCard, card := range cards {
+			fmt.Println("card:", card)
+			for j := 0; j <= 4; j++ {
+				if drawnNum == card[j] {
+					fmt.Printf("\told card: %v, drawNum: %v, j: %v\n", card, drawnNum, j)
+					card[j] = -1
+					fmt.Println("\tnew card:", card)
+					sum := 0
+					for k := 0; k <= 4; k++ {
+						sum = sum + card[k]
+					}
+					if sum == -5 {
+						fmt.Printf("\tbingo! card: %v, drawNum: %v, j: %v\n", card, drawnNum, j)
+						fmt.Println("\tcard number:", numCard)
+						originalCard := getInputs()[numCard]
+						fmt.Println("original card:", originalCard)
+						return
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -38,7 +51,7 @@ func getInputs() cards {
 			8, 2, 23, 4, 24,
 		},
 		{
-			21, 9, 14, 16, 7,
+			21, 9, 14, 16, 7, // this is first one to mark bingo
 		},
 		{
 			6, 10, 3, 18, 5,

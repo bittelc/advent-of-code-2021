@@ -1,67 +1,63 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"log"
+	"os"
+	"strconv"
+	"strings"
 )
 
-type cards [][]int
+type row []int
+type card []row
+type cards []card
 
 func main() {
-	cards := getInputs()
-	fmt.Println(cards)
-	for i := 0; ; i++ {
-		drawnNum := draw(i)
-		fmt.Println("drew:", drawnNum)
-		for numCard, card := range cards {
-			fmt.Println("card:", card)
-			for j := 0; j <= 4; j++ {
-				if drawnNum == card[j] {
-					fmt.Printf("\told card: %v, drawNum: %v, j: %v\n", card, drawnNum, j)
-					card[j] = -1
-					fmt.Println("\tnew card:", card)
-					sum := 0
-					for k := 0; k <= 4; k++ {
-						sum = sum + card[k]
-					}
-					if sum == -5 {
-						fmt.Printf("\tbingo! card: %v, drawNum: %v, j: %v\n", card, drawnNum, j)
-						fmt.Println("\tcard number:", numCard)
-						originalCard := getInputs()[numCard]
-						fmt.Println("original card:", originalCard)
-						return
-					}
-				}
-			}
-		}
-	}
+	crds := getInputs()
+	fmt.Println("crds:", crds)
 }
 
 func draw(i int) int {
 	inputs := []int{7, 4, 9, 5, 11, 17, 23, 2, 0, 14, 21, 24, 10, 16, 13, 6, 15, 25, 12, 22, 18, 20, 8, 19, 3, 26, 1}
 	return inputs[i]
-
 }
 
 func getInputs() cards {
-	input := cards{
-		[]int{
-			22, 13, 17, 11, 0,
-		},
-		{
-			8, 2, 23, 4, 24,
-		},
-		{
-			21, 9, 14, 16, 7, // this is first one to mark bingo
-		},
-		{
-			6, 10, 3, 18, 5,
-		},
-		{
-			1, 12, 20, 15, 19,
-		},
-		{
-			1, 12, 20, 15, 19,
-		},
+	crds := cards{}
+	file, err := os.Open("test_input.txt")
+	if err != nil {
+		log.Fatal(err)
 	}
-	return input
+	defer file.Close()
+	scanner := bufio.NewScanner(file)
+	crd := card{}
+	rw := row{}
+	for scanner.Scan() {
+		line := scanner.Text()
+		rw = nil
+		rw = parseRow(line)
+		fmt.Println("rw", rw)
+		if len(rw) == 0 {
+			crds = append(crds, crd)
+			crd = nil
+			continue
+		}
+		crd = append(crd, rw)
+	}
+	crds = append(crds, crd)
+	return crds
+}
+
+func parseRow(s string) row {
+	rw := row{}
+	parsedS := strings.Fields(s)
+	for _, val := range parsedS {
+		i, err := strconv.Atoi(val)
+		if err != nil {
+			log.Fatalf("error converting string value in row to int: %v", err)
+		}
+		rw = append(rw, i)
+	}
+	return rw
 }

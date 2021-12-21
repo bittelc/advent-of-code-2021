@@ -9,7 +9,8 @@ import (
 	"strings"
 )
 
-type row []int
+type space map[int]bool
+type row []space
 type card []row
 type cards []card
 
@@ -17,8 +18,8 @@ func main() {
 	crds := getInputs()
 	fmt.Println("crds:", crds)
 	for i := 0; ; i++ {
-		drewNum := draw(i)
-		fmt.Println("drewNum:", drewNum)
+		// drewNum := draw(i)
+		// fmt.Println("drewNum:", drewNum)
 		// markCards(&crds, drewNum)
 		// winner, crd := checkForRow(crds)
 		// if winner {
@@ -28,6 +29,7 @@ func main() {
 		// if winner {
 		// 	fmt.Println("there's a column winner from card %v containing %v", crd, i)
 		// }
+		return
 	}
 }
 
@@ -73,14 +75,18 @@ func getInputs() cards {
 }
 
 func parseRow(s string) row {
+	fmt.Println("parsing row:", s)
 	rw := row{}
+	spce := space{}
 	parsedS := strings.Fields(s)
 	for _, val := range parsedS {
+		spce = space{}
 		i, err := strconv.Atoi(val)
 		if err != nil {
 			log.Fatalf("error converting string value in row to int: %v", err)
 		}
-		rw = append(rw, i)
+		spce[i] = false
+		rw = append(rw, spce)
 	}
 	return rw
 }

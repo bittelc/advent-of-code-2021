@@ -16,6 +16,29 @@ type cards []card
 func main() {
 	crds := getInputs()
 	fmt.Println("crds:", crds)
+	for i := 0; ; i++ {
+		drewNum := draw(i)
+		fmt.Println("drewNum:", drewNum)
+		// markCards(&crds, drewNum)
+		// winner, crd := checkForRow(crds)
+		// if winner {
+		// 	fmt.Println("there's a row winner from card %v containing %v", crd, i)
+		// }
+		// winner, crd = checkForColumn(crds)
+		// if winner {
+		// 	fmt.Println("there's a column winner from card %v containing %v", crd, i)
+		// }
+	}
+}
+
+func markCards(crds *cards, drewNum int) {
+	for _, crd := range *crds {
+		for _, rw := range crd {
+			for _, val := range rw {
+				fmt.Println("val:", val)
+			}
+		}
+	}
 }
 
 func draw(i int) int {

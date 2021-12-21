@@ -18,9 +18,9 @@ func main() {
 	crds := getInputs()
 	fmt.Println("crds:", crds)
 	for i := 0; ; i++ {
-		// drewNum := draw(i)
-		// fmt.Println("drewNum:", drewNum)
-		// markCards(&crds, drewNum)
+		drewNum := draw(i)
+		fmt.Println("drewNum:", drewNum)
+		markCards(&crds, drewNum)
 		// winner, crd := checkForRow(crds)
 		// if winner {
 		// 	fmt.Println("there's a row winner from card %v containing %v", crd, i)
@@ -37,14 +37,21 @@ func markCards(crds *cards, drewNum int) {
 	for _, crd := range *crds {
 		for _, rw := range crd {
 			for _, val := range rw {
-				fmt.Println("val:", val)
+				for key := range val {
+					fmt.Println("key:", key)
+					if drewNum == key {
+						val[drewNum] = true
+					}
+				}
 			}
 		}
 	}
+	fmt.Println("crds:", crds)
 }
 
 func draw(i int) int {
 	inputs := []int{7, 4, 9, 5, 11, 17, 23, 2, 0, 14, 21, 24, 10, 16, 13, 6, 15, 25, 12, 22, 18, 20, 8, 19, 3, 26, 1}
+	// inputs := []int{7}
 	return inputs[i]
 }
 
@@ -75,7 +82,6 @@ func getInputs() cards {
 }
 
 func parseRow(s string) row {
-	fmt.Println("parsing row:", s)
 	rw := row{}
 	spce := space{}
 	parsedS := strings.Fields(s)

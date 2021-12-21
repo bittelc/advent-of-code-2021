@@ -21,16 +21,20 @@ func main() {
 		drewNum := draw(i)
 		fmt.Println("drewNum:", drewNum)
 		markCards(&crds, drewNum)
-		// winner, crd := checkForRow(crds)
-		// if winner {
-		// 	fmt.Println("there's a row winner from card %v containing %v", crd, i)
-		// }
+		winner, crd := checkForRow(&crds)
+		if winner {
+			fmt.Printf("there's a row winner from card %+v containing %v", crd, i)
+		}
 		// winner, crd = checkForColumn(crds)
 		// if winner {
 		// 	fmt.Println("there's a column winner from card %v containing %v", crd, i)
 		// }
 		return
 	}
+}
+
+func checkForRow(crds *cards) (bool, card) {
+	return false, nil
 }
 
 func markCards(crds *cards, drewNum int) {

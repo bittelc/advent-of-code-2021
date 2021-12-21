@@ -9,6 +9,8 @@ import (
 	"strings"
 )
 
+var drawNumList []int = []int{7, 4, 9, 5, 11, 17, 23, 2, 0, 14, 21, 24, 10, 16, 13, 6, 15, 25, 12, 22, 18, 20, 8, 19, 3, 26, 1}
+
 type space map[int]bool
 type row []space
 type card []row
@@ -16,24 +18,45 @@ type cards []card
 
 func main() {
 	crds := getInputs()
-	fmt.Println("crds:", crds)
-	for i := 0; ; i++ {
+	for i := 0; i < len(drawNumList); i++ {
 		drewNum := draw(i)
-		fmt.Println("drewNum:", drewNum)
+		fmt.Println("drew number:", drewNum)
 		markCards(&crds, drewNum)
 		winner, crd := checkForRow(&crds)
 		if winner {
-			fmt.Printf("there's a row winner from card %+v containing %v", crd, i)
+			fmt.Printf("there's a row winner from card %+v containing %v\n", crd, drewNum)
+			return
 		}
 		// winner, crd = checkForColumn(crds)
 		// if winner {
 		// 	fmt.Println("there's a column winner from card %v containing %v", crd, i)
 		// }
-		return
 	}
 }
 
+func checkForColumn(crds *cards) (bool, card) {
+	for _, crd := range *crds {
+		for i := 0; i <= 4; i++ {
+			keyval := 
+		}
+	}
+	return false, nil
+}
+
 func checkForRow(crds *cards) (bool, card) {
+	for _, crd := range *crds {
+	rww:
+		for _, rw := range crd {
+			for _, keyval := range rw {
+				for _, val := range keyval {
+					if val == false {
+						break rww
+					}
+				}
+			}
+			return true, crd
+		}
+	}
 	return false, nil
 }
 
@@ -42,7 +65,6 @@ func markCards(crds *cards, drewNum int) {
 		for _, rw := range crd {
 			for _, val := range rw {
 				for key := range val {
-					fmt.Println("key:", key)
 					if drewNum == key {
 						val[drewNum] = true
 					}
@@ -50,13 +72,10 @@ func markCards(crds *cards, drewNum int) {
 			}
 		}
 	}
-	fmt.Println("crds:", crds)
 }
 
 func draw(i int) int {
-	inputs := []int{7, 4, 9, 5, 11, 17, 23, 2, 0, 14, 21, 24, 10, 16, 13, 6, 15, 25, 12, 22, 18, 20, 8, 19, 3, 26, 1}
-	// inputs := []int{7}
-	return inputs[i]
+	return drawNumList[i]
 }
 
 func getInputs() cards {
@@ -73,7 +92,6 @@ func getInputs() cards {
 		line := scanner.Text()
 		rw = nil
 		rw = parseRow(line)
-		fmt.Println("rw", rw)
 		if len(rw) == 0 {
 			crds = append(crds, crd)
 			crd = nil
